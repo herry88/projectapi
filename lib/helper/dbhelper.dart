@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class DbHelper {
   //function get data
-  Future<List>? getData() async {
+  Future<List> getData() async {
     var response = await http.get(
       Uri.parse(
         "https://backendapilaravel-app.herokuapp.com/api/product",

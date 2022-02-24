@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:projectapi/helper/dbhelper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'addpage.dart';
 import 'detailpage.dart';
@@ -13,6 +14,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   DbHelper dbHelper = DbHelper();
+  List<String> items = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+  void _onRefresh() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  void _onLoading() async {
+    // monitor network fetch
+    await Future.delayed(Duration(milliseconds: 1000));
+    // if failed,use loadFailed(),if no data return,use LoadNodata()
+    items.add((items.length + 1).toString());
+    if (mounted) setState(() {});
+    _refreshController.loadComplete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return const AddPage();
+                return AddPage();
               },
             ),
           );
